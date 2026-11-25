@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wayfinder</title>
+  <!-- Leaflet: the library that draws the interactive map -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- LEFT PANEL: search + results -->
+    <aside class="panel">
+      <header class="brand">
+        <h1>Wayfinder</h1>
+        <p>Runs, cafés and food near wherever you're headed.</p>
+      </header>
+
+      <form id="search-form" class="search">
+        <input id="search-input" type="search" placeholder='A place, or ask: "sushi near Shibuya"' autocomplete="off" required>
+        <!-- Microphone: tap and speak your request -->
+        <button id="mic-btn" type="button" class="mic" title="Speak your request" aria-label="Speak your request">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"/></svg>
+        </button>
+        <button type="submit">Search</button>
+      </form>
+      <div class="search-extra">
+        <button id="locate-btn" type="button" class="link-btn">📍 Use my location</button>
+        <span class="hint">or click the map to drop a pin</span>
+      </div>
+      <!-- Shows what the app understood from your request -->
+      <div id="understood" class="understood" hidden></div>
+      <ul id="search-results" class="search-results" hidden></ul>
+
+      <div id="current" class="current" hidden>
+        <div class="current-label">Exploring around</div>
+        <div id="current-name" class="current-name"></div>
+      </div>
+
+      <div class="radius">
+        <label for="radius">Search radius</label>
+        <select id="radius">
+          <option value="500">500 m</option>
+          <option value="1000" selected>1 km</option>
+          <option value="2000">2 km</option>
+          <option value="5000">5 km</option>
+        </select>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="cafes">☕ Cafés</button>
+        <button class="tab" data-tab="restaurants">🍽️ Food</button>
+        <button class="tab" data-tab="running">🏃 Running</button>
+      </nav>
+
+      <!-- TAB: Cafés -->
+      <section id="tab-cafes" class="tab-panel">
+        <div id="cafes-status" class="status">Search for a place to see cafés nearby.</div>
+        <ul id="cafes-list" class="results"></ul>
+      </section>
+
+      <!-- TAB: Restaurants -->
+      <section id="tab-restaurants" class="tab-panel" hidden>
+        <select id="cuisine-filter" class="cuisine-filter" hidden>
+          <option value="">All cuisines</option>
+        </select>
+        <div id="restaurants-status" class="status">Search for a place to see restaurants nearby.</div>
+        <ul id="restaurants-list" class="results"></ul>
+      </section>
+
+      <!-- TAB: Running -->
+      <section id="tab-running" class="tab-panel" hidden>
+        <div class="card">
+          <h2>Generate a loop</h2>
+          <p class="muted">A round-trip run that starts and ends at your pin, on real paths and streets.</p>
+          <div class="loop-controls">
+            <select id="loop-distance">
+              <option value="3">3 km</option>
+              <option value="5" selected>5 km</option>
+              <option value="8">8 km</option>
+              <option value="10">10 km</option>
+              <option value="15">15 km</option>
+              <option value="21">21 km</option>
+            </select>
+            <select id="loop-pace" title="Your pace per km">
+              <option value="4.5">4:30 /km</option>
+              <option value="5">5:00 /km</option>
+              <option value="5.5">5:30 /km</option>
+              <option value="6" selected>6:00 /km</option>
+              <option value="7">7:00 /km</option>
+              <option value="8">8:00 /km</option>
+            </select>
+            <button id="loop-btn" type="button">Make a loop</button>
+          </div>
+          <div id="loop-status" class="status small" hidden></div>
+          <div id="loop-result" class="loop-result" hidden>
+            <div class="loop-stats">
+              <strong id="loop-km"></strong> km · about <strong id="loop-time"></strong>
+            </div>
+            <div class="loop-actions">
+              <button id="loop-again" type="button" class="secondary">↻ Another direction</button>
+              <button id="loop-gpx" type="button" class="secondary">⬇ GPX for watch</button>
+            </div>
+          </div>
+        </div>
+        <h2 class="section-title">Parks &amp; tracks nearby</h2>
+        <div id="running-status" class="status">Search for a place to see parks and running tracks.</div>
+        <ul id="running-list" class="results"></ul>
+      </section>
+
+      <footer class="credits">
+        Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors ·
+        Search by Nominatim · Places by Overpass · Routes by OSRM
+      </footer>
+    </aside>
+
+    <!-- RIGHT: the map -->
+    <main id="map"></main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
