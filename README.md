@@ -2,7 +2,17 @@
 
 Find cafés, restaurants, parks and running loops near any place: a country, a city, or the street your hotel is on.
 
-## Run it
+**Live app:** https://bananamilk001.github.io/wayfinder/ (open it on your phone and add it to your Home Screen)
+
+## Publish an update
+
+After changing the files, run this in Terminal. The live site updates about a minute later:
+
+```bash
+cd ~/Documents/"Claude Code"/wayfinder && git add -A && git commit -m "Describe your change" && git push
+```
+
+## Run it on your Mac
 
 Open Terminal and run:
 
